@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  nxtcldbackup:
+    container_name: nxtcld-backup
+    build:
+      context: .
+      dockerfile: alpine.dockerfile
+    init: true
+    environment:
+      - CUSTOM_ENV_VAR=foobar
+    volumes:
+      - ./alpine-crontab-example.txt:/etc/crontabs/root
