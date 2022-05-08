@@ -1,0 +1,4 @@
+#!/bin/ash
+
+mkdir -p /mnt/backup/weekly
+rsync –r --delete /mnt/backup/daily/ /mnt/backup/weekly/

@@ -1,12 +1,14 @@
-FROM alpine
+FROM alpine:latest
 
-#RUN apk add --update apk-cron && rm -rf /var/cache/apk/*
+RUN apk add --update rsync && rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+COPY periodic /etc/periodic
+RUN chmod -R +x /etc/periodic
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 # -f | Foreground
-# -l N | Set log level. Most verbose 0, default 8
-CMD ["crond", "-f", "-l", "2"]
+CMD ["crond", "-f", "-d", "8", "-c", "/etc/crontabs"]

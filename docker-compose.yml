@@ -8,6 +8,8 @@ services:
       dockerfile: alpine.dockerfile
     init: true
     environment:
-      - CUSTOM_ENV_VAR=foobar
+      - SOURCE=/mnt/source
+      - BACKUP=/mnt/backup
     volumes:
-      - ./alpine-crontab-example.txt:/etc/crontabs/root
+      - /mnt/nextcloud:/mnt/source
+      - /mnt/raid1/nextcloud:/mnt/backup

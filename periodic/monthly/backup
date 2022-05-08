@@ -1,0 +1,4 @@
+#!/bin/ash
+
+mkdir -p /mnt/backup/monthly
+tar cvjf /mnt/backup/monthly/monthly_$(date +%Y%m%d).tar.bz2 /mnt/backup/daily/

@@ -1,0 +1,4 @@
+#!/bin/ash
+
+mkdir -p /mnt/backup/daily
+rsync –r --delete /mnt/source/ /mnt/backup/daily/
