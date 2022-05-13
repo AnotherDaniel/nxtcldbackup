@@ -9,7 +9,7 @@ COPY periodic /etc/periodic
 RUN chmod -R +x /etc/periodic
 
 RUN mkdir /root/.unison
-COPY *.prf /root/.unison/
+COPY unison/*.prf /root/.unison/
 
 ENTRYPOINT ["/entrypoint.sh"]
 
