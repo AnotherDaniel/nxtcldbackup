@@ -1,6 +1,7 @@
 # nxtcldbackup - and more, actually
 
 This is a mini docker image that uses busybox crond to perform daily, weekly and monthly backups from a source to a target directory. It has been created with the intent to backup nextcloud data, where the nextcloud share is mounted via [davfs](https://en.wikipedia.org/wiki/Davfs2). As davfs is not ... blazingly fast, I am using [unison](https://www.cis.upenn.edu/~bcpierce/unison/) to perform the synchronization, as rsync turned out to be too slow to be useful in this context. 
+However, this is not necessarily limited to backing up nextcloud file shares - should work for every case where you need to take somewhat structured backups/synchronization points of a directory that is available in your file system.
 
 # What it does
 
@@ -27,3 +28,8 @@ services:
       - /mnt/nextcloud:/mnt/source
       - /mnt/nxtcld_backup:/mnt/backup
 ```
+
+# ToDos
+
+- once this has proved to work reasonably well, add logic to remove monthly backups older than a certain (configurable) time period
+- if we're bored, might add a configuration switch to use either rsync or unison
