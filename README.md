@@ -25,8 +25,12 @@ services:
       dockerfile: alpine.dockerfile
     init: true
     volumes:
+      - unison-conf:/root/.unison
       - /mnt/nextcloud:/mnt/source
-      - /mnt/nxtcld_backup:/mnt/backup
+      - /mnt/raid1/nextcloud:/mnt/backup
+      
+volumes:
+  unison-conf:
 ```
 
 # ToDos
