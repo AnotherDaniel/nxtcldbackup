@@ -12,8 +12,10 @@ RUN chmod -R +x /etc/periodic
 # reports/datasets. To have this work properly (profiles should be there,
 # but also the sync reports should be persistet across container restarts),
 # this directory should be done as a volume-mount when running the container.
+# ATTENTION: to make a rebuild pick up changes here, remove this volume manually!
+#   docker volume rm nxtcldbackup_unison-conf
 RUN mkdir /root/.unison
-COPY unison/*.prf /root/.unison/
+COPY unison/* /root/.unison/
 
 ENTRYPOINT ["/entrypoint.sh"]
 

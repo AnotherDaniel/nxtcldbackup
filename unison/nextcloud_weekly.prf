@@ -1,9 +1,6 @@
 # Roots of the synchronization
-root = /mnt/backup/daily/
+root  = /mnt/backup/daily/
+force = /mnt/backup/daily/
 root = /mnt/backup/weekly/
 
-force = /mnt/backup/daily/
-
-mountpoint = InstantUpload
-fastcheck = true
-silent = true
+include common

@@ -1,0 +1,5 @@
+mountpoint = InstantUpload
+fastcheck = true
+silent = true
+log = true
+logfile = /var/log/unison
