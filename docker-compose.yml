@@ -11,5 +11,9 @@ services:
       - SOURCE=/mnt/source
       - BACKUP=/mnt/backup
     volumes:
+      - unison-conf:/root/.unison
       - /mnt/nextcloud:/mnt/source
       - /mnt/raid1/nextcloud:/mnt/backup
+
+volumes:
+  unison-conf:

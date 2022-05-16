@@ -6,4 +6,4 @@ mkdir -p /mnt/backup/monthly
 
 echo "`eval $TIMESTAMP` Starting unison monthly backup..." >> /var/log/backup
 tar cjf /mnt/backup/monthly/monthly_$(date +%Y%m%d).tar.bz2 /mnt/backup/daily/ >> /var/log/backup
-echo "`eval $TIMESTAMP`  ... unison monthly backup finished" >> /var/log/backup
+echo -e "\n`eval $TIMESTAMP`  ... unison monthly backup finished" >> /var/log/backup
