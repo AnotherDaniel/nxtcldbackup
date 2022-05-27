@@ -8,6 +8,7 @@ services:
       dockerfile: alpine.dockerfile
     init: true
     environment:
+      - UNISONLOCALHOSTNAME=nxtcld-backup
       - SOURCE=/mnt/source
       - BACKUP=/mnt/backup
     volumes:
