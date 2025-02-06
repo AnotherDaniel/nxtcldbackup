@@ -1,0 +1,6 @@
+# Roots of the synchronization
+root  = $BACKUP/daily/
+force = $BACKUP/daily/
+root = $BACKUP/weekly/
+
+include common

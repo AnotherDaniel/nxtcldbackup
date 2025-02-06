@@ -1,0 +1,25 @@
+services:
+  nxtcldbackup:
+    container_name: nxtcldbackup
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    environment:
+      - UNISONLOCALHOSTNAME=nxtcldbackup
+      - BACKUP=/mnt/backup
+      - WEBDRIVE_USERNAME=
+      - WEBDRIVE_PASSWORD=
+      - WEBDRIVE_URL=
+      - DAVFS2_ASK_AUTH=0
+      - DAVFS2_USE_LOCKS=0
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - unison-conf:/root/.unison
+      - /mnt/test:/mnt/backup
+
+volumes:
+  unison-conf:

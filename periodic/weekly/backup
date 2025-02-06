@@ -1,0 +1,9 @@
+#!/bin/ash
+
+TIMESTAMP="date +\"%b %e %T %Z\""
+
+mkdir -p /mnt/backup/weekly
+
+echo "$(eval $TIMESTAMP) Starting unison weekly backup..." >>/var/log/backup
+unison nextcloud_weekly >>/var/log/backup
+echo "$(eval $TIMESTAMP)  ... unison weekly backup finished" >>/var/log/backup

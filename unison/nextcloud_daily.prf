@@ -1,0 +1,6 @@
+# Roots of the synchronization
+root  = $WEBDRIVE_MOUNT
+force = $WEBDRIVE_MOUNT
+root = $BACKUP/daily/
+
+include common

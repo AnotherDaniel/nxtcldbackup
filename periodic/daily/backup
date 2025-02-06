@@ -1,0 +1,9 @@
+#!/bin/ash
+
+TIMESTAMP="date +\"%b %e %T %Z\""
+
+mkdir -p /mnt/backup/daily
+
+echo "$(eval $TIMESTAMP) Starting unison daily backup..." >>/var/log/backup
+unison nextcloud_daily >>/var/log/backup
+echo "$(eval $TIMESTAMP)  ... unison daily backup finished" >>/var/log/backup
