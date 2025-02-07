@@ -34,5 +34,6 @@ volumes:
 
 ## ToDos
 
+- add some scripting magic to generate fixed-path unison config files from container ENV variable
 - once this has proved to work reasonably well, add logic to remove monthly backups older than a certain (configurable) time period
 - if we're bored, might add a configuration switch to use either rsync or unison
