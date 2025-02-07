@@ -1,6 +1,6 @@
 # Roots of the synchronization
-root  = $WEBDRIVE_MOUNT
-force = $WEBDRIVE_MOUNT
-root = $BACKUP/daily/
+root  = /mnt/source
+force = /mnt/source
+root = /mnt/backup/daily/
 
 include common
