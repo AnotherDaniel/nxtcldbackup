@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-
 RUN apk add --update tini unison && rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /entrypoint.sh
