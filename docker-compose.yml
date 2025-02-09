@@ -14,6 +14,8 @@ services:
       - unison-conf:/root/.unison
       - /mnt/nextcloud:/mnt/source
       - /mnt/nas:/mnt/backup
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
 
 volumes:
   unison-conf:
