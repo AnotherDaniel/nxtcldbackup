@@ -1,12 +1,15 @@
 FROM alpine:latest
 
-RUN apk add --update tini unison && rm -rf /var/cache/apk/*
+RUN apk add --update tini unison logrotate && rm -rf /var/cache/apk/*
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Copy scripts to /usr/local/lib
+COPY scripts/* /usr/local/lib/
+RUN chmod +x /usr/local/lib/*
 
 COPY periodic /etc/periodic
 RUN chmod -R +x /etc/periodic
+
+COPY config/backup /etc/logrotate.d/backup
 
 # This directory holds unison config profiles, but also the unison sync
 # reports/datasets. To have this work properly (profiles should be there,
@@ -17,7 +20,7 @@ RUN chmod -R +x /etc/periodic
 RUN mkdir /root/.unison
 COPY unison/* /root/.unison/
 
-ENTRYPOINT [ "tini", "-s", "-g", "--", "/entrypoint.sh" ]
+ENTRYPOINT [ "tini", "-s", "-g", "--", "/usr/local/lib/entrypoint.sh" ]
 
 # -f | Foreground
 CMD ["crond", "-f", "-d", "8", "-c", "/etc/crontabs"]

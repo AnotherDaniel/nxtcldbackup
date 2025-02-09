@@ -1,0 +1,33 @@
+#!/bin/ash
+
+set -e # Exit on any error
+
+. /usr/local/lib/backup-utils.sh
+
+TIMESTAMP="date +\"%b %e %T %Z\""
+BACKUP_DIR="${BACKUP:-/mnt/backup}"
+RETENTION_DAYS="${RETENTION_DAYS:-90}"
+
+if ! acquire_lock "monthly_cleanup"; then
+    echo "$(eval $TIMESTAMP) ERROR: Another cleanup process is running" >>/var/log/backup
+    exit 1
+fi
+
+# Ensure cleanup on exit
+trap 'release_lock "monthly_cleanup"' EXIT
+
+echo "$(eval $TIMESTAMP) Cleaning up monthly backups older than $RETENTION_DAYS days..." >>/var/log/backup
+
+# Ensure monthly backup directory exists
+if [ ! -d "$BACKUP_DIR/monthly" ]; then
+    echo "$(eval $TIMESTAMP) WARNING: Monthly backup directory does not exist" >>/var/log/backup
+    exit 0
+fi
+
+# Run cleanup
+if ! find "$BACKUP_DIR/monthly/" -name "monthly_*.tar.bz2" -type f -mtime "+$RETENTION_DAYS" -delete >>/var/log/backup 2>&1; then
+    echo "$(eval $TIMESTAMP) ERROR: Cleanup operation failed" >>/var/log/backup
+    exit 1
+fi
+
+echo "$(eval $TIMESTAMP)  ... cleanup finished" >>/var/log/backup

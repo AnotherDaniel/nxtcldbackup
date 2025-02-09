@@ -1,9 +1,32 @@
 #!/bin/ash
 
+set -e # Exit on any error
+
+. /usr/local/lib/backup-utils.sh
+
 TIMESTAMP="date +\"%b %e %T %Z\""
+BACKUP_DIR="${BACKUP:-/mnt/backup}"
 
-mkdir -p /mnt/backup/monthly
+if ! acquire_lock "monthly_backup"; then
+    echo "$(eval $TIMESTAMP) ERROR: Another backup process is running" >>/var/log/backup
+    exit 1
+fi
 
-echo "`eval $TIMESTAMP` Starting unison monthly backup..." >> /var/log/backup
-tar cjf /mnt/backup/monthly/monthly_$(date +%Y%m%d).tar.bz2 /mnt/backup/daily/ >> /var/log/backup
-echo "`eval $TIMESTAMP`  ... unison monthly backup finished" >> /var/log/backup
+# Ensure cleanup on exit
+trap 'release_lock "monthly_backup"' EXIT
+
+echo "$(eval $TIMESTAMP) Starting unison monthly backup..." >>/var/log/backup
+
+# Ensure backup directory exists
+if ! mkdir -p "$BACKUP_DIR/monthly"; then
+    echo "$(eval $TIMESTAMP) ERROR: Failed to create monthly backup directory" >>/var/log/backup
+    exit 1
+fi
+
+# Create monthly archive
+if ! tar cjf "$BACKUP_DIR/monthly/monthly_$(date +%Y%m%d).tar.bz2" "$BACKUP_DIR/daily/" >>/var/log/backup 2>&1; then
+    echo "$(eval $TIMESTAMP) ERROR: Failed to create monthly archive" >>/var/log/backup
+    exit 1
+fi
+
+echo "$(eval $TIMESTAMP)  ... unison monthly backup finished" >>/var/log/backup

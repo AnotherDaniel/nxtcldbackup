@@ -1,9 +1,32 @@
 #!/bin/ash
 
-TIMESTAMP="date +\"%b %e %T %Z\""
+set -e # Exit on any error
 
-mkdir -p /mnt/backup/daily
+. /usr/local/lib/backup-utils.sh
+
+TIMESTAMP="date +\"%b %e %T %Z\""
+BACKUP_DIR="${BACKUP:-/mnt/backup}"
+
+if ! acquire_lock "daily_backup"; then
+    echo "$(eval $TIMESTAMP) ERROR: Another backup process is running" >>/var/log/backup
+    exit 1
+fi
+
+# Ensure cleanup on exit
+trap 'release_lock "daily_backup"' EXIT
 
 echo "$(eval $TIMESTAMP) Starting unison daily backup..." >>/var/log/backup
-unison nextcloud_daily >>/var/log/backup
+
+# Ensure backup directory exists
+if ! mkdir -p "$BACKUP_DIR/daily"; then
+    echo "$(eval $TIMESTAMP) ERROR: Failed to create daily backup directory" >>/var/log/backup
+    exit 1
+fi
+
+# Run unison and capture its exit status
+if ! unison nextcloud_daily >>/var/log/backup 2>&1; then
+    echo "$(eval $TIMESTAMP) ERROR: Unison synchronization failed" >>/var/log/backup
+    exit 1
+fi
+
 echo "$(eval $TIMESTAMP)  ... unison daily backup finished" >>/var/log/backup

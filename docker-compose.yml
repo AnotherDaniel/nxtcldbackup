@@ -9,6 +9,7 @@ services:
       - UNISONLOCALHOSTNAME=nxtcldbackup
       - SOURCE=/mnt/source
       - BACKUP=/mnt/backup
+      - RETENTION_DAYS=90
     volumes:
       - unison-conf:/root/.unison
       - /mnt/nextcloud:/mnt/source
